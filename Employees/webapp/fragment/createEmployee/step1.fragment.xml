@@ -1,0 +1,27 @@
+<core:FragmentDefinition    xmlns:core="sap.ui.core"
+                            xmlns="sap.m"
+                            xmlns:app="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1">
+    <MessageStrip   class="sapUiSmallMarginBottom"
+                    text="{i18n>informationStep1}"
+                    showIcon="true"/>
+        <HBox
+                alignItems="Center"
+                justifyContent="Center"
+                width="100%">
+				<ToolbarSpacer/>
+				<Button text="{i18n>buttonInterno}"  press="onPressTypeEmployee" id="buttonInterno" app:myData="interno"/>
+				<Button text="{i18n>buttonAutonomo}" press="onPressTypeEmployee" id="buttonAutonomo" app:myData="autonomo"/>
+				<Button text="{i18n>buttonGerente}"  press="onPressTypeEmployee" id="buttonGerente" app:myData="gerente"/>          
+<!--             <SegmentedButton
+                width="320px"
+                selectionChange="setProductTypeFromSegmented"
+                selectedKey="">
+                <items>
+                    <SegmentedButtonItem  text="{i18n>textInterno}"/>
+                    <SegmentedButtonItem  text="{i18n>textAutonomo}"/>
+                    <SegmentedButtonItem  text="{i18n>textGerente}"/>
+                </items>
+            </SegmentedButton> -->
+        </HBox>
+        
+</core:FragmentDefinition>

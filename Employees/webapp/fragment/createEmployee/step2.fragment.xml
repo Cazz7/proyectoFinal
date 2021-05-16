@@ -1,0 +1,57 @@
+<core:FragmentDefinition xmlns:core="sap.ui.core" xmlns="sap.m"
+                         xmlns:form="sap.ui.layout.form">
+    <MessageStrip   class="sapUiSmallMarginBottom"
+                    text="{i18n>informationStep2}"
+                    showIcon="true"/>
+    <form:SimpleForm
+            editable="true">
+        <Label text="{i18n>labelEmployeeName}" required="true"/>
+        <Input valueStateText="{i18n>stateEmployeeName}"
+                valueState="{/stateEmployeeName}" id="employeeName" liveChange="additionalInfoValidation"
+                placeholder="{i18n>hintEmployeeName}" value="{/valueEmployeeName}"/>
+        <Label text="{i18n>labelEmployeeSurname}" required="true"/>
+        <Input valueStateText="{i18n>stateEmployeeSurname}"
+                valueState="{/stateEmployeeSurname}" id="employeeSurname"
+                liveChange="additionalInfoValidation" type="Text" placeholder="{i18n>hintEmployeeSurname}"
+                value="{/valueEmployeeSurname}"/>
+        <Label text="{= ${/employeeType} === 'autonomo' ? ${i18n>labelEmployeeCIF} : ${i18n>labelEmployeeDNI} }" required="true" labelFor="employeeDNI"/>
+        <Input valueStateText="{i18n>stateEmployeeDNI}"
+                valueState="{/stateEmployeeDNI}" id="employeeDNI"
+                liveChange="additionalInfoValidation" type="Text" placeholder="{i18n>hintEmployeeDNI}"
+                value="{/valueEmployeeDNI}"/>        
+        <Label text="{= ${/employeeType} === 'autonomo' ? ${i18n>labelEmployeeWageAutonomo} : ${i18n>labelEmployeeWageInternos} }" required="false"/>                           
+        <!-- Logic for slider depending on type of employee -->                     
+        <Slider enableTickmarks="true"
+          min="{= ${/employeeType} === 'interno' ? 12000 : ${/employeeType} === 'autonomo' ? 100 : 50000 }"
+          max="{= ${/employeeType} === 'interno' ? 50000 : ${/employeeType} === 'autonomo' ? 2000 : 200000 }"
+          progress="true" step="{= ${/employeeType} === 'autonomo' ? 100 : 1000 }"  class="sapUiMediumMarginBottom" width="95%"  showAdvancedTooltip="true"
+          value="{= ${/employeeType} === 'interno' ? 24000 : ${/employeeType} === 'gerente' ? 70000 : 400 }"/>  
+        <Label text="{i18n>labelEmployeeEntryDate}" required="true" labelFor="employeeEntryDate"/>
+        <Input valueStateText="{i18n>stateEmployeeEntryDate}"
+                valueState="{/stateEmployeeEntryDate}" id="employeeEntryDate" 
+                change="additionalInfoValidation" type="Date" placeholder="{i18n>hintEmployeeEntryDate}"
+                value="{/valueEmployeeEntryDate}"/>                                       
+        <!-- Eliminar -->
+        <Label text="Name" required="true"/>
+        <Input valueStateText="Enter 6 symbols or more"
+                valueState="{/productNameState}" id="ProductName" liveChange="additionalInfoValidation"
+                placeholder="Enter name with length greater than 6" value="{/productName}"/>
+        <Label text="Weight" required="true"/>
+        <Input valueStateText="Enter digits"
+                valueState="{/productWeightState}" id="ProductWeight"
+                liveChange="additionalInfoValidation" type="Number" placeholder="Enter digits"
+                value="{/productWeight}"/>
+        <Label text="Manufacturer"/>
+        <Select selectedKey="{/productManufacturer}">
+            <core:Item key="Apple" text="Apple"/>
+            <core:Item key="Microsoft" text="Microsoft"/>
+            <core:Item key="Google" text="Google"/>
+            <core:Item key="Sony" text="Sony"/>
+            <core:Item key="Samsung" text="Samsung"/>
+            <core:Item key="Logitech" text="Logitech"/>
+        </Select>
+        <Label text="Description"/>
+        <TextArea value="{/productDescription}" rows="8"/>
+        <!-- Eliminar  -->
+        </form:SimpleForm>
+</core:FragmentDefinition>

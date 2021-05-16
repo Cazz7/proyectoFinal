@@ -1,0 +1,86 @@
+<mvc:View
+		height="100%"
+		controllerName="cazz.Employees.controller.CreateEmployee"
+		xmlns:form="sap.ui.layout.form"
+		xmlns:core="sap.ui.core"
+		xmlns:u="sap.ui.unified"
+		xmlns:mvc="sap.ui.core.mvc"
+        xmlns:l="sap.ui.layout"
+		xmlns="sap.m">
+		<NavContainer id="wizardNavContainer">
+			<pages>
+				<Page
+				id="wizardContentPage"
+				showHeader="false">
+					<content>
+						<Wizard id="CreateProductWizard" class="sapUiResponsivePadding--header sapUiResponsivePadding--content"
+								complete="wizardCompletedHandler">
+							<WizardStep id="employeeTypeStep"
+										title="{i18n>step1}"
+										validated="false" >
+                            <!-- Fragment for Type of Employee -->
+							<core:Fragment fragmentName="cazz.Employees.fragment.createEmployee.step1" type="XML"/>	
+							</WizardStep>
+							<WizardStep id="employeeInfoStep"
+										validated="true"
+										title="{i18n>step2}"
+										activate="additionalInfoValidation">
+                            <!-- Fragment for Employe Data -->
+							<core:Fragment fragmentName="cazz.Employees.fragment.createEmployee.step2" type="XML"/>	
+							</WizardStep>
+							<WizardStep id="OptionalInfoStep"
+										validated="true"
+										activate="optionalStepActivation"
+										title="{i18n>step3}">
+                            <!-- Fragment for Optional info -->
+                            <core:Fragment fragmentName="cazz.Employees.fragment.createEmployee.step3" type="XML"/>	
+							</WizardStep>
+							<WizardStep id="PricingStep"
+										activate="pricingActivate"
+										complete="pricingComplete"
+										validated="true"
+										title="Pricing">
+								<MessageStrip class="sapUiSmallMarginBottom"
+										text="You can use the wizard previousStep() and nextStep() methods to navigate from step to step without validation. Also you can use the GoToStep(step) method to scroll programmatically to previously visited steps."
+										showIcon="true"/>
+								<form:SimpleForm
+										editable="true">
+									<Label text="Price"/>
+									<Input value="{/productPrice}"/>
+									<Label text="Discount group"/>
+									<ComboBox selectedKey="{/discountGroup}">
+										<core:Item key="Kids" text="Kids"/>
+										<core:Item key="Teens" text="Teens"/>
+										<core:Item key="Adults" text="Adults"/>
+										<core:Item key="Elderly" text="Elderly"/>
+									</ComboBox>
+									<Label text=" VAT is included"/>
+									<CheckBox selected="{/productVAT}"/>
+								</form:SimpleForm>
+							</WizardStep>
+						</Wizard>
+					</content>
+					<footer>
+						<OverflowToolbar>
+							<ToolbarSpacer/>
+							<Button text="Cancel" press="handleWizardCancel"/>
+						</OverflowToolbar>
+					</footer>
+				</Page>
+				<Page id="wizardReviewPage" showHeader="false">
+					<content>
+					    <!-- Fragment for Review -->
+                        <core:Fragment fragmentName="cazz.Employees.fragment.createEmployee.review" type="XML"/>		
+					</content>
+					<footer>
+						<Bar>
+							<contentRight>
+								<Button text="Submit" press="handleWizardSubmit"/>
+								<Button text="Cancel" press="handleWizardCancel"/>
+							</contentRight>
+						</Bar>
+					</footer>
+				</Page>
+			</pages>
+		</NavContainer>
+</mvc:View>

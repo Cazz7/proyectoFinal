@@ -1,0 +1,53 @@
+<core:FragmentDefinition xmlns:core="sap.ui.core" xmlns="sap.m"
+                         xmlns:u="sap.ui.unified"
+                         xmlns:l="sap.ui.layout"
+                         xmlns:f="sap.ui.layout.form">
+    <MessageStrip class="sapUiSmallMarginBottom"
+            text="{i18n>informationStep3}."
+            showIcon="true"/>                                      
+        <Label text="{i18n>labelEmployeeComments}" width="100%"/>
+        <TextArea value="{/employeeComments}" rows="8" width="100%" />
+    <UploadCollection id="uploadCollection"
+                        maximumFilenameLength="55"
+                        maximumFileSize="10"
+                        multiple="true"
+                        sameFilenameAllowed="true"
+                        instantUpload="true"
+                        uploadUrl="/sap/opu/odata/sap/YSAPUI5_SRV_01/FilesSet"
+                        change="onFileChange"
+                        uploadComplete="onFileUploadComplete"
+                        beforeUploadStarts="onFileBeforeUpload"
+                        fileDeleted="onFileDeleted"
+                        />
+        <f:SimpleForm 
+            editable="true">          
+        <Label text="Cover photo"/>
+        <u:FileUploader
+                width="100%"
+                tooltip="Upload product cover photo to the local server"
+                style="Emphasized"
+                placeholder="Choose a file for Upload..."/>
+        <Label text="Manufacturing date"/>
+        <DatePicker
+                id="DP3"
+                displayFormat="short"
+                value="{/manufacturingDate}"/>
+        <Label text="Availability"/>
+        <SegmentedButton selectedKey="{/availabilityType}">
+            <items>
+                <SegmentedButtonItem key="In store" text="In store"/>
+                <SegmentedButtonItem key="In depot" text="In depot"/>
+                <SegmentedButtonItem key="In repository" text="In repository"/>
+                <SegmentedButtonItem key="Out of stock" text="Out of stock"/>
+            </items>
+        </SegmentedButton>
+        <Label text="Size"/>
+        <Input value="{/size}"/>
+        <ComboBox maxWidth="100px" selectedKey="{/measurement}">
+            <core:Item key="X" text="X"/>
+            <core:Item key="Y" text="Y"/>
+            <core:Item key="Z" text="Z"/>
+        </ComboBox>
+
+    </f:SimpleForm>                         
+</core:FragmentDefinition>
