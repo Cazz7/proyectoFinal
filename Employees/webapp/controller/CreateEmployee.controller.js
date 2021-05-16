@@ -88,29 +88,6 @@ sap.ui.define([
             } else {
                 this._wizard.invalidateStep(this.byId("ProductInfoStep"));
             }
-
-            // Delete
-            var name = this.byId("ProductName").getValue();
-            var weight = parseInt(this.byId("ProductWeight").getValue());
-
-            if (isNaN(weight)) {
-                this.model.setProperty("/productWeightState", "Error");
-            } else {
-                this.model.setProperty("/productWeightState", "None");
-            }
-
-            if (name.length < 6) {
-                this.model.setProperty("/productNameState", "Error");
-            } else {
-                this.model.setProperty("/productNameState", "None");
-            }
-
-            if (name.length < 6 || isNaN(weight)) {
-                this._wizard.invalidateStep(this.byId("ProductInfoStep"));
-            } else {
-                this._wizard.validateStep(this.byId("ProductInfoStep"));
-            }
-            //Delete
         },
 
         optionalStepActivation: function () {

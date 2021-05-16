@@ -31,27 +31,5 @@
                 valueState="{/stateEmployeeEntryDate}" id="employeeEntryDate" 
                 change="additionalInfoValidation" type="Date" placeholder="{i18n>hintEmployeeEntryDate}"
                 value="{/valueEmployeeEntryDate}"/>                                       
-        <!-- Eliminar -->
-        <Label text="Name" required="true"/>
-        <Input valueStateText="Enter 6 symbols or more"
-                valueState="{/productNameState}" id="ProductName" liveChange="additionalInfoValidation"
-                placeholder="Enter name with length greater than 6" value="{/productName}"/>
-        <Label text="Weight" required="true"/>
-        <Input valueStateText="Enter digits"
-                valueState="{/productWeightState}" id="ProductWeight"
-                liveChange="additionalInfoValidation" type="Number" placeholder="Enter digits"
-                value="{/productWeight}"/>
-        <Label text="Manufacturer"/>
-        <Select selectedKey="{/productManufacturer}">
-            <core:Item key="Apple" text="Apple"/>
-            <core:Item key="Microsoft" text="Microsoft"/>
-            <core:Item key="Google" text="Google"/>
-            <core:Item key="Sony" text="Sony"/>
-            <core:Item key="Samsung" text="Samsung"/>
-            <core:Item key="Logitech" text="Logitech"/>
-        </Select>
-        <Label text="Description"/>
-        <TextArea value="{/productDescription}" rows="8"/>
-        <!-- Eliminar  -->
-        </form:SimpleForm>
+    </form:SimpleForm>
 </core:FragmentDefinition>
