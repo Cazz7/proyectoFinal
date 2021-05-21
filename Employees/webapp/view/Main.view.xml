@@ -16,8 +16,10 @@
     </Panel>
     <Panel expandable="true" headerText="{i18n>titleOrders}" width="auto" class="sapUiResponsiveMargin" expanded="true">    
         <content>
-            <GenericTile class="sapUiTinyMarginBegin sapUiTinyMarginTop tileLayout" 
-                        press="onSignOrder" headerImage="sap-icon://signature">
+            <GenericTile id="firmarPedidoTile" 
+                        class="sapUiTinyMarginBegin sapUiTinyMarginTop tileLayout" 
+                        press="onSignOrder" headerImage="sap-icon://signature"
+                        url="https://739bd17etrial-dev-logali-approuter.cfapps.us10.hana.ondemand.com/logaligroupEmployees/index.html">
                 <TileContent footer="{i18n>signOrder}"/>
             </GenericTile>
         </content>
