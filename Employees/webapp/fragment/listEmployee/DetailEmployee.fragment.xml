@@ -1,0 +1,100 @@
+<core:FragmentDefinition    xmlns:core="sap.ui.core" 
+                            xmlns="sap.m"
+                            xmlns:c="sap.suite.ui.commons"
+                            xmlns:f="sap.ui.layout.form">
+    <Page id="detailUnselected" class="sapUiResponsivePadding--header 
+        sapUiResponsivePadding--footer"
+        title="{i18n>textDetail}"
+        backgroundDesign= "Solid">
+        <FlexBox alignItems="Center" justifyContent="Center" height="100%">
+			<Text text="{i18n>textNoSelect}"></Text>
+		</FlexBox>        
+    </Page>
+    <Page title="{i18n>textDetail}" id="detailEmployee">
+        <ObjectHeader
+            icon= "{= ${employeeModel>Type} === '0' ? 'sap-icon://employee-pane' : ${employeeModel>Type} === '1' ? 'sap-icon://employee' : 'sap-icon://leads' }"
+            title="{employeeModel>FirstName} {employeeModel>LastName}"
+            intro="{employeeModel>Dni}"
+            class="sapUiResponsivePadding--header"
+            responsive="true">
+				<attributes>
+					<ObjectAttribute title="{i18n>labelEmployeeEntryDate}" text=" {path:'employeeModel>CreationDate',type:'sap.ui.model.type.Date'}" />
+					<ObjectAttribute title="{i18n>labelEmployeeType}" text=" {= ${employeeModel>Type} === '0' ? ${i18n>textInterno} : ${employeeModel>Type} === '1' ? ${i18n>textAutonomo} : ${i18n>textGerente} }" />
+				</attributes>
+				<statuses>
+					<ObjectStatus title="{i18n>labelEmployeeComments}" text=" {employeeModel>Comments}" />
+				</statuses>            
+        </ObjectHeader>
+			<IconTabBar
+				expanded="{device>/isNoPhone}"
+				class="sapUiSmallMarginBottom sapUiResponsiveContentPadding">
+				<items>					
+						<IconTabFilter
+                            id="ficheros"
+							design="Horizontal"
+							icon="sap-icon://attachment"
+							text="{i18n>textFicheros}">
+							<UploadCollection
+                                        id="UploadCollection"
+                                        maximumFilenameLength="55"
+                                        maximumFileSize="10"
+                                        multiple="true"
+                                        noDataDescription="{i18n>textNoDataDescription}"
+                                        noDataText="{i18n>textNoDataText}"                                      
+                                        sameFilenameAllowed="true"
+                                        instantUpload="true"                                        
+                                        uploadUrl="/sap/opu/odata/sap/ZEMPLOYEES_SRV/Attachments"
+                                        items="{employeeModel>UserToAttachment}"
+                                        change="onFileChanged"                                        
+                                        fileDeleted="onFileDeleted"
+                                        uploadComplete="onUploadComplete"
+                                        beforeUploadStarts="onBeforeUploadStart">
+                                <items>
+                                    <UploadCollectionItem
+                                        documentId="{employeeModel>AttId}"
+                                        visibleEdit="false"
+                                        fileName="{employeeModel>DocName}"
+                                        press="onPressFile">
+                                    </UploadCollectionItem>
+                                </items>
+							</UploadCollection>
+						</IconTabFilter>
+						<IconTabFilter
+							icon="sap-icon://money-bills"
+							design="Horizontal"
+                        text="{i18n>textWageHistory}">
+                        <c:Timeline
+                                id="idTimeline"
+                                showHeaderBar="false"
+                                enableDoubleSided="true"
+                                groupByType="Year"
+                                groupBy="CreationDate"
+                                growingThreshold="0"
+                                sortOldestFirst="true"
+                                enableScroll="false"
+                                content="{employeeModel>UserToSalary}">
+                            <c:content>
+                                <c:TimelineItem
+                                        id="idTemplateItem"
+                                        dateTime="{employeeModel>CreationDate}"
+                                        userNameClickable="true"
+                                        text="{employeeModel>Comments}"
+                                        userName="{parts:[{path:'employeeModel>Ammount'},{path:'employeeModel>Waers'}],
+												type: 'sap.ui.model.type.Currency',
+												formatOptions: {showMeasure: false}}"
+                                        icon="sap-icon://payment-approval">
+                                </c:TimelineItem>
+                            </c:content>
+                        </c:Timeline>
+                    </IconTabFilter>
+            </items>
+        </IconTabBar>
+        <footer>
+            <Toolbar>
+                <ToolbarSpacer/>
+                <Button text="{i18n>textDeleteEmployee}" press="onDeleteEmployee"></Button>
+                <Button text="{i18n>textPromoteEmployee}" press="onPromoteEmployee"></Button>
+            </Toolbar>
+        </footer>                    
+    </Page>                             
+</core:FragmentDefinition>                            

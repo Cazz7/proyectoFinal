@@ -1,80 +1,86 @@
+// @ts-nocheck
 sap.ui.define([
     'sap/ui/core/mvc/Controller',
     'sap/ui/model/json/JSONModel',
     "sap/m/MessageToast",
-    "sap/m/MessageBox"
-], function (Controller, JSONModel, MessageToast, MessageBox) {
+    "sap/m/MessageBox",
+    "sap/m/UploadCollectionParameter"
+], function (Controller, JSONModel, MessageToast, MessageBox, UploadCollectionParameter) {
     "use strict";
 
     return Controller.extend("cazz.Employees.controller.CreateEmployee", {
+        onBeforeShow: function () {
+            //Clear all previous steps
+            if (this._wizard) {
+                var firstStep = this._wizard.getSteps()[0];
+                this._wizard.discardProgress(firstStep);
+                this._wizard.goToStep(firstStep);
+                firstStep.setValidated(false);
+                if (this.model) {
+
+                }
+            }
+        },
+
         onInit: function () {
-            this._wizard = this.byId("CreateProductWizard");
+            const myRoute = this.getOwnerComponent().getRouter().getRoute("RouteCreateEmployee");
+            myRoute.attachPatternMatched(this._onMyRoutePatternMatched, this);
+        },
+
+        _onMyRoutePatternMatched: function (event) {
+            this._wizard = this.byId("createEmployeeWizard");
             this._oNavContainer = this.byId("wizardNavContainer");
             this._oWizardContentPage = this.byId("wizardContentPage");
 
             this.model = new JSONModel();
-            this.model.setData({
-                employeeNameState: "None",
-                employeeSurnameState: "None"
-            });
+            this.model.setData({});
             this.getView().setModel(this.model);
-            this.model.setProperty("/productType", "Mobile");
-            this.model.setProperty("/availabilityType", "In Store");
-            this.model.setProperty("/navApiEnabled", true);
-            this.model.setProperty("/productVAT", false);
-            this.model.setProperty("/measurement", "");
-            this._setEmptyValue("/productManufacturer");
-            this._setEmptyValue("/productDescription");
-            this._setEmptyValue("/size");
-            this._setEmptyValue("/productPrice");
-            this._setEmptyValue("/manufacturingDate");
-            this._setEmptyValue("/discountGroup");
+            //Back to top
+            var firstStep = this._wizard.getSteps()[0];
+            this._wizard.discardProgress(firstStep);
+            firstStep.setValidated(false);
+            this._wizard.goToStep(firstStep);
 
         },
+
         onPressTypeEmployee: function (event) {
-            let oResourceBundle = this.getView().getModel("i18n").getResourceBundle();
 
             switch (event.getSource().data("myData")) {
-                case "interno":
+                case "0":
                     this._wizard.validateStep(this.byId("employeeTypeStep"));
-                    this.model.setProperty("/employeeType", "interno");
-                    this.additionalInfoValidation();
+                    this.model.setProperty("/Type", "0");
+                    this.mandatoryInfoValidation();
                     break;
-                case "autonomo":
+                case "1":
                     this._wizard.validateStep(this.byId("employeeTypeStep"));
-                    this.model.setProperty("/employeeType", "autonomo");
-                    this.additionalInfoValidation();
+                    this.model.setProperty("/Type", "1");
+                    this.mandatoryInfoValidation();
                     break;
-                case "gerente":
+                case "2":
                     this._wizard.validateStep(this.byId("employeeTypeStep"));
-                    this.model.setProperty("/employeeType", "gerente");
-                    this.additionalInfoValidation();
+                    this.model.setProperty("/Type", "2");
+                    this.mandatoryInfoValidation();
                     break;
                 default:
                     break;
             }
-        },
-        setProductType: function (evt) {
-            var productType = evt.getSource().getTitle();
-            this.model.setProperty("/productType", productType);
-            this.byId("ProductStepChosenType").setText("Chosen product type: " + productType);
-            this._wizard.validateStep(this.byId("employeeTypeStep"));
+            // next step must be active
+            if (this._wizard.getCurrentStep() === this.byId("employeeTypeStep").getId()) {
+                this._wizard.nextStep();
+            } else {
+                this._wizard.goToStep(this.byId("employeeInfoStep"));
+            }
+
         },
 
-        setProductTypeFromSegmented: function (evt) {
-            var productType = evt.getParameters().item.getText();
-            this.model.setProperty("/productType", productType);
-            this._wizard.validateStep(this.byId("employeeTypeStep"));
-        },
+        mandatoryInfoValidation: function () {
 
-        additionalInfoValidation: function () {
-            
             let employeeName = this.byId("employeeName").getValue();
-            let employeeSurname = this.byId("employeeSurname").getValue();
-            let employeeEntryDate = this.byId("employeeEntryDate").getValue();
+            let employeeLastname = this.byId("employeeLastname").getValue();
+            let employeeEntryDate = this.byId("employeeCreationDate").getValue();
             //Validate Name
             let isNameValid = this._validateName(employeeName);
-            let isSurnameValid = this._validateSurname(employeeSurname);
+            let isLastnameValid = this._validateLastname(employeeLastname);
 
             //Validate DNI
             let employeeDNI = this.byId("employeeDNI").getValue();
@@ -83,51 +89,45 @@ sap.ui.define([
             //Validate Date
             let isDateValid = this._validateDate(employeeEntryDate);
 
-            if (isNameValid && isSurnameValid && isDateValid) {
-                this._wizard.validateStep(this.byId("ProductInfoStep"));
+            if (isNameValid && isLastnameValid && isDateValid) {
+                this._wizard.validateStep(this.byId("employeeInfoStep"));
+                return true;
             } else {
-                this._wizard.invalidateStep(this.byId("ProductInfoStep"));
+                this._wizard.invalidateStep(this.byId("employeeInfoStep"));
+                return false;
             }
         },
 
         optionalStepActivation: function () {
-            MessageToast.show(
-                'This event is fired on activate of Step3.'
-            );
+            let amount = this.byId("employeeWageSlider").getValue();
+            this.model.setProperty("/Amount", amount);
         },
 
-        optionalStepCompletion: function () {
-            MessageToast.show(
-                'This event is fired on complete of Step3. You can use it to gather the information, and lock the input data.'
-            );
-        },
-
-        pricingActivate: function () {
-            this.model.setProperty("/navApiEnabled", true);
-        },
-
-        pricingComplete: function () {
-            this.model.setProperty("/navApiEnabled", false);
-        },
-
-        scrollFrom4to2: function () {
-            this._wizard.goToStep(this.byId("ProductInfoStep"));
-        },
-
-        goFrom4to3: function () {
-            if (this._wizard.getProgressStep() === this.byId("PricingStep")) {
-                this._wizard.previousStep();
-            }
-        },
-
-        goFrom4to5: function () {
-            if (this._wizard.getProgressStep() === this.byId("PricingStep")) {
-                this._wizard.nextStep();
-            }
-        },
-
+        //Review
         wizardCompletedHandler: function () {
-            this._oNavContainer.to(this.byId("wizardReviewPage"));
+
+            // Se verifica que los datos obligatorios sean válidos
+            if (this.mandatoryInfoValidation()) {
+                //Review Page
+                this._oNavContainer.to(this.byId("wizardReviewPage"));
+
+                //Archivos subidos
+                let uploadCollection = this.byId("uploadCollection");
+                let attachments = uploadCollection.getItems();
+                let employeeNumberOfAttachments = uploadCollection.getItems().length;
+                this.model.setProperty("/employeeNumberOfAttachments", employeeNumberOfAttachments);
+                var arrayAttach = [];
+                if (employeeNumberOfAttachments > 0) {
+                    for (var i in attachments) {
+                        arrayAttach.push({
+                            FileName: attachments[i].getFileName()
+                        });
+                    }
+                }
+                this.model.setProperty("/employeeAttachments", arrayAttach);
+            } else {
+                this._wizard.goToStep(this.byId("employeeInfoStep"));
+            }
         },
 
         backToWizardContent: function () {
@@ -146,10 +146,6 @@ sap.ui.define([
             this._handleNavigationToStep(2);
         },
 
-        editStepFour: function () {
-            this._handleNavigationToStep(3);
-        },
-
         _handleNavigationToStep: function (iStepNumber) {
             var fnAfterNavigate = function () {
                 this._wizard.goToStep(this._wizard.getSteps()[iStepNumber]);
@@ -160,16 +156,64 @@ sap.ui.define([
             this.backToWizardContent();
         },
 
-        _handleMessageBoxOpen: function (sMessage, sMessageBoxType) {
+        _handleMessageBoxOpen: function (sMessage, sMessageBoxType, sActionType) {
             MessageBox[sMessageBoxType](sMessage, {
                 actions: [MessageBox.Action.YES, MessageBox.Action.NO],
                 onClose: function (oAction) {
                     if (oAction === MessageBox.Action.YES) {
-                        this._handleNavigationToStep(0);
-                        this._wizard.discardProgress(this._wizard.getSteps()[0]);
+                        if (sActionType === "cancel") {
+                            //Back to menu
+                            this._oNavContainer.back();
+                            var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
+                            oRouter.navTo("RouteMain", {}, true);
+                        } else {
+                            //Create employee
+                            this._saveEmployee();
+                        }
                     }
                 }.bind(this)
             });
+        },
+
+        _saveEmployee: function (sPath) {
+            let dataModel = this.getView().getModel().getData();
+            this.getView().setBusy(true);
+            let JSONBody = {
+                Type: dataModel.Type,
+                SapId: this.getOwnerComponent().SapId,
+                FirstName: dataModel.FirstName,
+                LastName: dataModel.LastName,
+                Dni: dataModel.Dni,
+                CreationDate: dataModel.CreationDate,
+                Comments: dataModel.Comments,
+                UserToSalary: [{
+                    Ammount: parseFloat(dataModel.Amount).toString(),
+                    Comments: dataModel.Comments,
+                    Waers: "EUR",
+                }]
+            };
+
+            this.getView().getModel("employeeModel").create("/Users", JSONBody, {
+                success: function (data) {
+                    this.getView().setBusy(false);
+                    this._employeeId = data.EmployeeId;
+                    sap.m.MessageBox.information(this.oView.getModel("i18n").getResourceBundle().getText("empleadoCreado") + ": " + this._employeeId, {
+                        onClose: function () {
+                            //Back to menu
+
+                            this._oNavContainer.back();
+                            var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
+                            oRouter.navTo("RouteMain", {}, true);
+                        }.bind(this)
+                    });
+                    //Se llama a la función "upload" del uploadCollection
+                    this._uploadDocument();
+                }.bind(this),
+                error: function () {
+                    this.getView().setBusy(false);
+                }.bind(this)
+            });
+
         },
 
         _setEmptyValue: function (sPath) {
@@ -179,9 +223,11 @@ sap.ui.define([
         _validateName: function (sName) {
             if (sName.length < 2) {
                 this.model.setProperty("/stateEmployeeName", "Error");
+                this.model.setProperty("/employeeNameValid", false);
                 return false;
             } else {
                 this.model.setProperty("/stateEmployeeName", "None");
+                this.model.setProperty("/employeeNameValid", true);
                 return true;
             }
 
@@ -192,20 +238,24 @@ sap.ui.define([
 
             if (sDate === "") {
                 this.model.setProperty("/stateEmployeeEntryDate", "Error");
+                this.model.setProperty("/employeeEntryDateValid", false);
                 return false;
             } else {
                 this.model.setProperty("/stateEmployeeEntryDate", "None");
+                this.model.setProperty("/employeeEntryDateValid", true);
                 return true;
             };
 
         },
 
-        _validateSurname: function (sSurname) {
-            if (sSurname.length < 2) {
-                this.model.setProperty("/stateEmployeeSurname", "Error");
+        _validateLastname: function (sLastname) {
+            if (sLastname.length < 2) {
+                this.model.setProperty("/stateEmployeeLastname", "Error");
+                this.model.setProperty("/employeeLastnameValid", false);
                 return false;
             } else {
-                this.model.setProperty("/stateEmployeeSurname", "None");
+                this.model.setProperty("/stateEmployeeLastname", "None");
+                this.model.setProperty("/employeeLastnameValid", true);
                 return true;
             }
         },
@@ -215,49 +265,39 @@ sap.ui.define([
             let letter;
             let letterList;
             let regularExp = /^\d{8}[a-zA-Z]$/;
-            // Si es CIF no se hace valdación
-            if (this.model.getProperty("/employeeType") !== "autonomo") {
-                //Se comprueba que el formato es válido
-                if (regularExp.test(sDNI) === true) {
-                    //Número
-                    number = sDNI.substring(0, sDNI.length - 1);
-                    //Letra
-                    letter = sDNI.substring(sDNI.length - 1, 1);
-                    number = number % 23;
-                    letterList = "TRWAGMYFPDXBNJZSQVHLCKET";
-                    letterList = letterList.substring(number, number + 1);
-                    if (letterList !== letterList.toUpperCase()) {
-                        this.model.setProperty("/stateEmployeeDNI", "Error");
-                        return false;
-                    } else {
-                        this.model.setProperty("/stateEmployeeDNI", "None");
-                        return true;
-                    }
+            //Se comprueba que el formato es válido
+            if (regularExp.test(sDNI) === true) {
+                //Número
+                number = sDNI.substr(0, sDNI.length - 1);
+                //Letra
+                letter = sDNI.substr(sDNI.length - 1, 1);
+                number = number % 23;
+                letterList = "TRWAGMYFPDXBNJZSQVHLCKET";
+                letterList = letterList.substring(number, number + 1);
+                if (letterList !== letter.toUpperCase()) {
+                    this.model.setProperty("/stateEmployeeDNI", "Error");
+                    this.model.setProperty("/employeeDNIValid", false);
+                    return false;
                 } else {
-                    this.model.setProperty("/stateEmployeeDNI", "Error");
-                    return false;
-                }
-            }else{
-                if (sDNI.length < 1) {
-                    this.model.setProperty("/stateEmployeeDNI", "Error");
-                    return false;
-                }else{
                     this.model.setProperty("/stateEmployeeDNI", "None");
+                    this.model.setProperty("/employeeDNIValid", true);
                     return true;
                 }
+            } else {
+                this.model.setProperty("/stateEmployeeDNI", "Error");
+                this.model.setProperty("/employeeDNIValid", false);
+                return false;
             }
         },
 
         handleWizardCancel: function () {
-            this._handleMessageBoxOpen("Are you sure you want to cancel your report?", "warning");
+            const oResourceBundle = this.getView().getModel("i18n").getResourceBundle();
+            this._handleMessageBoxOpen(oResourceBundle.getText("textCancel"), "warning", "cancel");
         },
 
         handleWizardSubmit: function () {
-            this._handleMessageBoxOpen("Are you sure you want to submit your report?", "confirm");
-        },
-
-        productWeighStateFormatter: function (val) {
-            return isNaN(val) ? "Error" : "None";
+            const oResourceBundle = this.getView().getModel("i18n").getResourceBundle();
+            this._handleMessageBoxOpen(oResourceBundle.getText("textSubmit"), "confirm", "save");
         },
 
         discardProgress: function () {
@@ -275,9 +315,41 @@ sap.ui.define([
                 }
             };
 
-            this.model.setProperty("/productWeightState", "Error");
-            this.model.setProperty("/productNameState", "Error");
+            this.model.setProperty("/stateEmployeeName", "Error");
+            this.model.setProperty("/employeeNameValid", false);
+            this.model.setProperty("/stateEmployeeLastname", "Error");
+            this.model.setProperty("/employeeLastnameValid", false);
+            this.model.setProperty("/stateEmployeeEntryDate", "Error");
+            this.model.setProperty("/employeeEntryDateValid", false);
+            this.model.setProperty("/stateEmployeeDNI", "Error");
+            this.model.setProperty("/employeeDNIValid", false);
             clearContent(this._wizard.getSteps());
+        },
+        // File handlers
+        onFileChange: function (oEvent) {
+            let oUploadCollection = oEvent.getSource();
+
+            //Header Token CSRF - Cross-site request forgery
+            let oCustomerHeaderToken = new sap.m.UploadCollectionParameter({
+                name: "x-csrf-token",
+                value: this.getView().getModel("employeeModel").getSecurityToken()
+            });
+            oUploadCollection.addHeaderParameter(oCustomerHeaderToken);
+        },
+
+        onBeforeUploadStarts: function (oEvent) {
+
+            var oEmployeeHeaderSlug = new UploadCollectionParameter({
+                name: "slug",
+                value: this.getOwnerComponent().SapId + ";" + this._employeeId + ";" + oEvent.getParameter("fileName")
+            });
+            oEvent.getParameters().addHeaderParameter(oEmployeeHeaderSlug);
+        },
+
+        _uploadDocument: function () {
+            let oUploadCollection = this.byId("uploadCollection");
+            oUploadCollection.upload();
         }
+
     });
 });

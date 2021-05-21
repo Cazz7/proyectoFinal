@@ -16,14 +16,6 @@
             "version": "1.40.12"
         },
         "dataSources": {
-            "Northwind.svc": {
-                "uri": "Northwind/v2/Northwind/Northwind.svc/",
-                "type": "OData",
-                "settings": {
-                    "odataVersion": "2.0",
-                    "localUri": "localService/metadata.xml"
-                }
-            },
             "ZEMPLOYEES_SRV": {
                 "uri": "/sap/opu/odata/sap/ZEMPLOYEES_SRV/",
                 "type": "OData",
@@ -77,27 +69,14 @@
                     "bundleName": "cazz.Employees.i18n.i18n"
                 }
             },
-            "odataNorthwind": {
-                "dataSource": "Northwind.svc",
-                "preload": true,
-                "settings": {
-                    "defaultOperationMode": "Server",
-                    "defaultBindingMode": "OneWay",
-                    "defaultCountMode": "Request",
-                    "refreshAfterChange": false
-                }
-            },
             "employeeModel": {
                 "type": "sap.ui.model.odata.v2.ODataModel",
                 "dataSource": "ZEMPLOYEES_SRV",
                 "preload": true,
                 "settings": {
                     "defaultOperationMode": "Server",
-                    "defaultBindingMode": "TwoWay",
-                    "defaultCountMode": "Request",
-                    "refreshAfterChange": false,
-                    "useBatch": false,
-                    "defaultUpdateMethod": "Put"
+                    "defaultBindingMode": "OneWay",
+                    "defaultCountMode": "Request"
                 }
             }
         },
@@ -132,6 +111,13 @@
                     "target": [
                         "TargetCreateEmployee"
                     ]
+                },
+                {
+                    "name": "RouteListEmployee",
+                    "pattern": "list/",
+                    "target": [
+                        "TargetListEmployee"
+                    ]
                 }
             ],
             "targets": {
@@ -148,6 +134,13 @@
                     "clearControlAggregation": false,
                     "viewId": "CreateEmployee",
                     "viewName": "CreateEmployee"
+                },
+                "TargetListEmployee": {
+                    "viewType": "XML",
+                    "transition": "slide",
+                    "clearControlAggregation": false,
+                    "viewId": "ListEmployee",
+                    "viewName": "ListEmployee"
                 }
             }
         }

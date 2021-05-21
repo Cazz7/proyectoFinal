@@ -1,0 +1,19 @@
+<mvc:View
+	controllerName="cazz.Employees.controller.ListEmployee"
+	xmlns="sap.m"
+    xmlns:core="sap.ui.core"
+	xmlns:mvc="sap.ui.core.mvc">
+	<SplitApp
+		id="splitAppEmployee"
+		initialDetail="detail"
+		initialMaster="master">
+		<masterPages>    
+            <!-- Fragment for Master -->
+            <core:Fragment fragmentName="cazz.Employees.fragment.listEmployee.MasterEmployee" type="XML"/>
+		</masterPages>        
+		<detailPages>
+            <!-- Fragment for Detail -->
+            <core:Fragment fragmentName="cazz.Employees.fragment.listEmployee.DetailEmployee" type="XML"/>
+		</detailPages>
+	</SplitApp>
+</mvc:View>

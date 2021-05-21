@@ -9,19 +9,10 @@
                 justifyContent="Center"
                 width="100%">
 				<ToolbarSpacer/>
-				<Button text="{i18n>buttonInterno}"  press="onPressTypeEmployee" id="buttonInterno" app:myData="interno"/>
-				<Button text="{i18n>buttonAutonomo}" press="onPressTypeEmployee" id="buttonAutonomo" app:myData="autonomo"/>
-				<Button text="{i18n>buttonGerente}"  press="onPressTypeEmployee" id="buttonGerente" app:myData="gerente"/>          
-<!--             <SegmentedButton
-                width="320px"
-                selectionChange="setProductTypeFromSegmented"
-                selectedKey="">
-                <items>
-                    <SegmentedButtonItem  text="{i18n>textInterno}"/>
-                    <SegmentedButtonItem  text="{i18n>textAutonomo}"/>
-                    <SegmentedButtonItem  text="{i18n>textGerente}"/>
-                </items>
-            </SegmentedButton> -->
+				<Button text="{i18n>buttonInterno}"  press="onPressTypeEmployee" id="buttonInterno" app:myData="0"/>
+				<Button text="{i18n>buttonAutonomo}" press="onPressTypeEmployee" id="buttonAutonomo" app:myData="1"/>
+				<Button text="{i18n>buttonGerente}"  press="onPressTypeEmployee" id="buttonGerente" app:myData="2"/>          
+
         </HBox>
         
 </core:FragmentDefinition>

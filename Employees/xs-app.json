@@ -8,12 +8,6 @@
     {
       "authenticationType": "none",
       "csrfProtection": false,
-      "source": "^/Northwind/(.*)$",
-      "destination": "Northwind",
-      "target": "$1"
-    },{
-      "authenticationType": "none",
-      "csrfProtection": false,
       "source": "^/sap/opu/odata/sap/ZEMPLOYEES_SRV/",
       "destination": "logaligroupERP"
     },

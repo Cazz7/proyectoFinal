@@ -5,18 +5,20 @@
     <MessageStrip class="sapUiSmallMarginBottom"
             text="{i18n>informationStep3}."
             showIcon="true"/>                                      
-        <Label text="{i18n>labelEmployeeComments}" width="100%"/>
-        <TextArea value="{/employeeComments}" rows="4" width="100%" />
+    <Label text="{i18n>labelEmployeeComments}" width="100%"/>
+    <TextArea value="{/Comments}" rows="4" width="100%" />
     <UploadCollection id="uploadCollection"
                         maximumFilenameLength="55"
                         maximumFileSize="10"
                         multiple="true"
+                        noDataDescription="{i18n>textNoDataDescription}"
+                        noDataText="{i18n>textNoDataText}"
                         sameFilenameAllowed="true"
-                        instantUpload="true"
-                        uploadUrl="/sap/opu/odata/sap/YSAPUI5_SRV_01/FilesSet"
+                        instantUpload="false"
+                        uploadUrl="/sap/opu/odata/sap/ZEMPLOYEES_SRV/Attachments"
                         change="onFileChange"
-                        uploadComplete="onFileUploadComplete"
-                        beforeUploadStarts="onFileBeforeUpload"
-                        fileDeleted="onFileDeleted"
-                        />                         
+                        beforeUploadStarts="onBeforeUploadStarts"    
+                        numberOfAttachmentsText="{i18n>labelEmployeeAttachments}"  
+                                          
+                        />      
 </core:FragmentDefinition>

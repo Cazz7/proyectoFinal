@@ -2,70 +2,57 @@
                             xmlns="sap.m"
                             xmlns:form="sap.ui.layout.form">
     <form:SimpleForm
-            title="1. Product Type"
+            title="{i18n>titleStep1}"
             minWidth="1024"
             editable="false"
             layout="ResponsiveGridLayout">
         <form:content>
-            <Label text="Type"/>
-            <Text id="ProductTypeChosen" text="{/productType}"/>
-            <Link press="editStepOne" text="Edit" />
+            <Label text="{i18n>labelEmployeeType}"/>
+            <Text id="TypeChosen" text="{= ${/Type} === '0' ? ${i18n>textInterno} : ${/Type} === '1' ? ${i18n>textAutonomo} : ${i18n>textGerente} }"/>
+            <Link press="editStepOne" text="{i18n>textEdit}" />
         </form:content>
     </form:SimpleForm>
 
     <form:SimpleForm
-            title="2. Product Information"
+            title="{i18n>titleStep2}"
             minWidth="1024"
             editable="false"
             layout="ResponsiveGridLayout">
         <form:content>
-            <Label text="Name"/>
-            <Text id="ProductNameChosen" text="{/productName}"/>
-            <Label text="Weight"/>
-            <Text id="ProductWeightChosen" text="{/productWeight}"/>
-            <Label text="Manufacturer"/>
-            <Text id="ProductManufacturerChosen" text="{/productManufacturer}"/>
-            <Label text="Description"/>
-            <Text id="ProductDescriptionChosen" text="{/productDescription}"/>
-            <Link press="editStepTwo" text="Edit" />
+            <Label text="{i18n>labelEmployeeName}"/>
+            <Text id="employeeNameChosen" text="{/FirstName}"/>
+            <Label text="{i18n>labelEmployeeLastname}"/>
+            <Text id="employeeLastnameChosen" text="{/LastName}"/>
+            <Label text="{= ${/Type} === '1' ? ${i18n>labelEmployeeCIF} : ${i18n>labelEmployeeDNI} }"/>
+            <Text id="employeeDNIChosen" text="{/Dni}"/>
+            <Label text="{= ${/Type} === '1' ? ${i18n>labelEmployeeWageAutonomo} : ${i18n>labelEmployeeWageInternos} }"/>
+            <Text id="employeeWageChosen" text="{/Amount}"/>
+            <Label text="{i18n>labelEmployeeEntryDate}"/>
+            <Text id="employeeEntryDateChosen" text="{path:'/CreationDate',type:'sap.ui.model.type.Date'}"/>                                                            
+            <Link press="editStepTwo" text="{i18n>textEdit}" />
         </form:content>
     </form:SimpleForm>
 
     <form:SimpleForm
-            title="3. Optional Information"
+            title="{i18n>titleStep3}"
             minWidth="1024"
             editable="false"
             layout="ResponsiveGridLayout">
         <form:content>
-            <Label text="Some text"/>
-            <Text text="Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-            tempor incididunt ut labore et dolore magna aliqua. "/>
-            <Label text="Manufacturing Date"/>
-            <Text id="ManufacturingDate" text="{/manufacturingDate}"/>
-            <Label text="Availability"/>
-            <Text id="AvailabilityChosen" text="{/availabilityType}"/>
-            <Label text="Size"/>
-            <HBox>
-                <Text id="Size" text="{/size}"/>
-                <Text id="Size2" class="sapUiTinyMarginBegin" text="{/measurement}"/>
-            </HBox>
-            <Link press="editStepThree" text="Edit" />
+            <Label text="{i18n>labelEmployeeComments}" visible="{= ${/Comments} === '' ? false : true }"/>
+            <Text text="{/Comments}" visible="{= ${/Comments} === '' ? false : true }"/>
+            <Label text="{i18n>labelEmployeeAttachments}" visible="{= ${/employeeNumberOfAttachments} === 0 ? false : true }"/>
+            <Text text="{/employeeNumberOfAttachments} {i18n>textAttachments}" visible="{= ${/employeeNumberOfAttachments} === 0 ? false : true }"/>
+            <Label text="" visible="{= ${/employeeNumberOfAttachments} === 0 ? false : true }"/>
+            <List
+                id="attachmentList"
+                items="{/employeeAttachments}"
+                width="50%"
+                visible="{= ${/employeeNumberOfAttachments} === 0 ? false : true }">
+                <StandardListItem title="{FileName}" />
+            </List>                        
+            <Link press="editStepThree" text="{i18n>textEdit}" />
         </form:content>
     </form:SimpleForm>
 
-    <form:SimpleForm
-            title="4. Pricing"
-            minWidth="1024"
-            editable="false"
-            layout="ResponsiveGridLayout">
-        <form:content>
-            <Label text="Price"/>
-            <Text id="ProductPriceChosen" text="{/productPrice}"/>
-            <Label text="Discount Group"/>
-            <Text id="DiscountGroupChosen" text="{/discountGroup}"/>
-            <Label text="VAT Included"/>
-            <Text id="ProductVATChosen" text="{/productVAT}"/>
-            <Link press="editStepFour" text="Edit" />
-        </form:content>
-    </form:SimpleForm>
 </core:FragmentDefinition>

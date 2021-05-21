@@ -9,7 +9,7 @@
                 <TileContent footer="{i18n>createEmployee}"/>
             </GenericTile>
             <GenericTile class="sapUiTinyMarginBegin sapUiTinyMarginTop tileLayout" 
-                        press="onSeeEmployee" headerImage="sap-icon://employee-lookup">
+                        press="onListEmployee" headerImage="sap-icon://employee-lookup">
                 <TileContent footer="{i18n>seeEmployees}"/>
             </GenericTile>
         </content>

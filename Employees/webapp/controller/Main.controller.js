@@ -5,9 +5,20 @@ sap.ui.define([
     return Controller.extend("cazz.Employees.controller.Main", {
         onInit: function () {
         },
-        onCreateEmployee: function (oEvent) {
+
+        onCreateEmployee: function () {
             let oRouter = sap.ui.core.UIComponent.getRouterFor(this);
             oRouter.navTo("RouteCreateEmployee", { });
-        }
+        },
+
+        onListEmployee: function () {
+            let oRouter = sap.ui.core.UIComponent.getRouterFor(this);
+            oRouter.navTo("RouteListEmployee", { });
+        },
+
+        onSignOrder: function () {
+            let oRouter = sap.ui.core.UIComponent.getRouterFor(this);
+            oRouter.navTo("RouteSignOrder", { });
+        },
     });
 });

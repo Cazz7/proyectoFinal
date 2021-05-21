@@ -7,29 +7,27 @@
             editable="true">
         <Label text="{i18n>labelEmployeeName}" required="true"/>
         <Input valueStateText="{i18n>stateEmployeeName}"
-                valueState="{/stateEmployeeName}" id="employeeName" liveChange="additionalInfoValidation"
-                placeholder="{i18n>hintEmployeeName}" value="{/valueEmployeeName}"/>
-        <Label text="{i18n>labelEmployeeSurname}" required="true"/>
-        <Input valueStateText="{i18n>stateEmployeeSurname}"
-                valueState="{/stateEmployeeSurname}" id="employeeSurname"
-                liveChange="additionalInfoValidation" type="Text" placeholder="{i18n>hintEmployeeSurname}"
-                value="{/valueEmployeeSurname}"/>
-        <Label text="{= ${/employeeType} === 'autonomo' ? ${i18n>labelEmployeeCIF} : ${i18n>labelEmployeeDNI} }" required="true" labelFor="employeeDNI"/>
+                valueState="{/stateEmployeeName}" id="employeeName" liveChange="mandatoryInfoValidation"
+                placeholder="{i18n>hintEmployeeName}" value="{/FirstName}"/>
+        <Label text="{i18n>labelEmployeeLastname}" required="true"/>
+        <Input valueStateText="{i18n>stateEmployeeLastname}"
+                valueState="{/stateEmployeeLastname}" id="employeeLastname"
+                liveChange="mandatoryInfoValidation" type="Text" placeholder="{i18n>hintEmployeeLastname}"
+                value="{/LastName}"/>
+        <Label text="{= ${/Type} === '1' ? ${i18n>labelEmployeeCIF} : ${i18n>labelEmployeeDNI} }" required="true" labelFor="employeeDNI"/>
         <Input valueStateText="{i18n>stateEmployeeDNI}"
                 valueState="{/stateEmployeeDNI}" id="employeeDNI"
-                liveChange="additionalInfoValidation" type="Text" placeholder="{i18n>hintEmployeeDNI}"
-                value="{/valueEmployeeDNI}"/>        
-        <Label text="{= ${/employeeType} === 'autonomo' ? ${i18n>labelEmployeeWageAutonomo} : ${i18n>labelEmployeeWageInternos} }" required="false"/>                           
+                liveChange="mandatoryInfoValidation" type="Text" placeholder="{i18n>hintEmployeeDNI}"
+                value="{/Dni}"/>        
+        <Label text="{= ${/Type} === '1' ? ${i18n>labelEmployeeWageAutonomo} : ${i18n>labelEmployeeWageInternos} }" required="false"/>                           
         <!-- Logic for slider depending on type of employee -->                     
-        <Slider enableTickmarks="true"
-          min="{= ${/employeeType} === 'interno' ? 12000 : ${/employeeType} === 'autonomo' ? 100 : 50000 }"
-          max="{= ${/employeeType} === 'interno' ? 50000 : ${/employeeType} === 'autonomo' ? 2000 : 200000 }"
-          progress="true" step="{= ${/employeeType} === 'autonomo' ? 100 : 1000 }"  class="sapUiMediumMarginBottom" width="95%"  showAdvancedTooltip="true"
-          value="{= ${/employeeType} === 'interno' ? 24000 : ${/employeeType} === 'gerente' ? 70000 : 400 }"/>  
-        <Label text="{i18n>labelEmployeeEntryDate}" required="true" labelFor="employeeEntryDate"/>
-        <Input valueStateText="{i18n>stateEmployeeEntryDate}"
-                valueState="{/stateEmployeeEntryDate}" id="employeeEntryDate" 
-                change="additionalInfoValidation" type="Date" placeholder="{i18n>hintEmployeeEntryDate}"
-                value="{/valueEmployeeEntryDate}"/>                                       
+        <Slider enableTickmarks="true" id="employeeWageSlider"
+          min="{= ${/Type} === '0' ? 12000 : ${/Type} === '1' ? 100 : 50000 }"
+          max="{= ${/Type} === '0' ? 50000 : ${/Type} === '1' ? 2000 : 200000 }"
+          progress="true" step="{= ${/Type} === '1' ? 100 : 1000 }"  class="sapUiMediumMarginBottom" width="95%"  showAdvancedTooltip="true"
+          value="{= ${/Type} === '0' ? 24000 : ${/Type} === '2' ? 70000 : 400 }" />  
+        <Label text="{i18n>labelEmployeeEntryDate}" required="true" labelFor="employeeCreationDate"/> 
+        <DatePicker id="employeeCreationDate"  dateValue="{/CreationDate}" valueState="{/stateEmployeeEntryDate}" 
+        valueStateText="{i18n>stateEmployeeEntryDate}" change="mandatoryInfoValidation" width="30%"/>                                     
     </form:SimpleForm>
 </core:FragmentDefinition>
