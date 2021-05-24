@@ -15,7 +15,7 @@
                         noDataText="{i18n>textNoDataText}"
                         sameFilenameAllowed="true"
                         instantUpload="false"
-                        uploadUrl="/sap/opu/odata/sap/ZEMPLOYEES_SRV/Attachments"
+                        uploadUrl="sap/opu/odata/sap/ZEMPLOYEES_SRV/Attachments"
                         change="onFileChange"
                         beforeUploadStarts="onBeforeUploadStarts"    
                         numberOfAttachmentsText="{i18n>labelEmployeeAttachments}"  
