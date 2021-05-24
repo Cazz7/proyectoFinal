@@ -9,7 +9,7 @@ sap.ui.define([
     "use strict";
 
     return Controller.extend("cazz.Employees.controller.CreateEmployee", {
-        onBeforeShow: function () {
+        onBeforeRendering: function () {
             //Clear all previous steps
             if (this._wizard) {
                 var firstStep = this._wizard.getSteps()[0];
@@ -41,7 +41,7 @@ sap.ui.define([
             firstStep.setValidated(false);
             this._wizard.goToStep(firstStep);
 
-        },
+        },        
 
         onPressTypeEmployee: function (event) {
 
@@ -156,25 +156,6 @@ sap.ui.define([
             this.backToWizardContent();
         },
 
-        _handleMessageBoxOpen: function (sMessage, sMessageBoxType, sActionType) {
-            MessageBox[sMessageBoxType](sMessage, {
-                actions: [MessageBox.Action.YES, MessageBox.Action.NO],
-                onClose: function (oAction) {
-                    if (oAction === MessageBox.Action.YES) {
-                        if (sActionType === "cancel") {
-                            //Back to menu
-                            this._oNavContainer.back();
-                            var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
-                            oRouter.navTo("RouteMain", {}, true);
-                        } else {
-                            //Create employee
-                            this._saveEmployee();
-                        }
-                    }
-                }.bind(this)
-            });
-        },
-
         _saveEmployee: function (sPath) {
             let dataModel = this.getView().getModel().getData();
             this.getView().setBusy(true);
@@ -209,8 +190,9 @@ sap.ui.define([
                     //Se llama a la función "upload" del uploadCollection
                     this._uploadDocument();
                 }.bind(this),
-                error: function () {
+                error: function (e) {
                     this.getView().setBusy(false);
+                    sap.base.Log.info(e);
                 }.bind(this)
             });
 
@@ -290,15 +272,34 @@ sap.ui.define([
             }
         },
 
+        handleWizardSubmit: function () {
+            const oResourceBundle = this.getView().getModel("i18n").getResourceBundle();
+            this._handleMessageBoxOpen(oResourceBundle.getText("textSubmit"), "confirm", "save");
+        },
+
         handleWizardCancel: function () {
             const oResourceBundle = this.getView().getModel("i18n").getResourceBundle();
             this._handleMessageBoxOpen(oResourceBundle.getText("textCancel"), "warning", "cancel");
         },
 
-        handleWizardSubmit: function () {
-            const oResourceBundle = this.getView().getModel("i18n").getResourceBundle();
-            this._handleMessageBoxOpen(oResourceBundle.getText("textSubmit"), "confirm", "save");
-        },
+        _handleMessageBoxOpen: function (sMessage, sMessageBoxType, sActionType) {
+            MessageBox[sMessageBoxType](sMessage, {
+                actions: [MessageBox.Action.YES, MessageBox.Action.NO],
+                onClose: function (oAction) {
+                    if (oAction === MessageBox.Action.YES) {
+                        if (sActionType === "cancel") {
+                            //Back to menu
+                            this._oNavContainer.back();
+                            var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
+                            oRouter.navTo("RouteMain", {}, true);
+                        } else {
+                            //Create employee
+                            this._saveEmployee();
+                        }
+                    }
+                }.bind(this)
+            });
+        },        
 
         discardProgress: function () {
             this._wizard.discardProgress(this.byId("employeeTypeStep"));

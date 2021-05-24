@@ -40,7 +40,7 @@
 					<footer>
 						<OverflowToolbar>
 							<ToolbarSpacer/>
-							<Button text="Cancel" press="handleWizardCancel"/>
+							<Button text="{i18n>buttonCancel}" press="handleWizardCancel"/>
 						</OverflowToolbar>
 					</footer>
 				</Page>

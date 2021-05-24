@@ -5,10 +5,10 @@
         backgroundDesign= "List">
         <Toolbar class="sapUiTinyMarginTop">
             <Button icon="sap-icon://nav-back" press="onPressBack"></Button>
-            <SearchField liveChange="onSearchEmployee" width="100%" />
+            <SearchField id="searchFieldEmployee" width="100%" search="onFilterEmployee" placeholder="{i18n>textSearch}"/>
         </Toolbar>             
         <!-- Se filtran los empleados de otros estudiantes  -->      
-        <List itemPress="onItemPressEmployee" items="{path:'employeeModel>/Users',filters:[{path:'SapId',operator:'EQ',value1:'cazz182@gmail.com'}]}">
+        <List id="employeeList" itemPress="onItemPressEmployee" items="{path:'employeeModel>/Users',filters:[{path:'SapId',operator:'EQ',value1:'cazz182@gmail.com'}]}">
             <items>
                 <StandardListItem title="{employeeModel>FirstName} {employeeModel>LastName}" description="{employeeModel>Dni}" type="Active"/>
             </items>

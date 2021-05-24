@@ -19,7 +19,7 @@
             <GenericTile id="firmarPedidoTile" 
                         class="sapUiTinyMarginBegin sapUiTinyMarginTop tileLayout" 
                         press="onSignOrder" headerImage="sap-icon://signature"
-                        url="https://739bd17etrial-dev-logali-approuter.cfapps.us10.hana.ondemand.com/logaligroupEmployees/index.html">
+                        url="https://739bd17etrial-dev-logali-employees.cfapps.us10.hana.ondemand.com/logaligroupEmployees/index.html">
                 <TileContent footer="{i18n>signOrder}"/>
             </GenericTile>
         </content>

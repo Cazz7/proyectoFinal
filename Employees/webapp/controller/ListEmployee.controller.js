@@ -17,9 +17,11 @@ sap.ui.define([
     "sap/m/Text",
     "sap/m/TextArea",
     "sap/m/Input",
-    "sap/m/DatePicker"
+    "sap/m/DatePicker",
+    "sap/ui/model/Filter",
+    "sap/ui/model/FilterOperator"    
 ], function (MessageToast, MessageBox, Controller, Device, Log, UploadCollectionParameter, Core, HorizontalLayout,
-    VerticalLayout, Dialog, DialogType, Button, ButtonType, Label, Text, TextArea, Input, DatePicker) {
+    VerticalLayout, Dialog, DialogType, Button, ButtonType, Label, Text, TextArea, Input, DatePicker, Filter, FilterOperator) {
     "use strict";
 
     return Controller.extend("cazz.Employees.controller.ListEmployee", {
@@ -36,6 +38,20 @@ sap.ui.define([
 
         onExit: function () {
             Device.orientation.detachHandler(this.onOrientationChange, this);
+        },
+
+        onFilterEmployee: function () {
+            const valueSearch = this.getView().byId("searchFieldEmployee").getValue();
+
+            var filters = [];
+
+            if (valueSearch !== "") {
+                filters.push(new Filter("FirstName", FilterOperator.Contains, valueSearch));
+            }
+
+            var oList = this.getView().byId("employeeList");
+            var oBinding = oList.getBinding("items");
+            oBinding.filter(filters);
         },
 
         onItemPressEmployee: function (oEvent) {
@@ -162,7 +178,7 @@ sap.ui.define([
                             }.bind(this)
                         }),
                         new Button({
-                            text: oResourceBundle.getText("textCancel"),
+                            text: oResourceBundle.getText("buttonCancel"),
                             press: function () {
                                 this.oPromoteDialog.close();
                             }.bind(this)

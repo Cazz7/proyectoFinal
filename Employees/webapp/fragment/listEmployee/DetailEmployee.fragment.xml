@@ -77,7 +77,6 @@
                                 <c:TimelineItem
                                         id="idTemplateItem"
                                         dateTime="{employeeModel>CreationDate}"
-                                        userNameClickable="true"
                                         text="{employeeModel>Comments}"
                                         userName="{parts:[{path:'employeeModel>Ammount'},{path:'employeeModel>Waers'}],
 												type: 'sap.ui.model.type.Currency',

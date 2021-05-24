@@ -23,7 +23,7 @@
         <!-- Logic for slider depending on type of employee -->                     
         <Slider enableTickmarks="true" id="employeeWageSlider"
           min="{= ${/Type} === '0' ? 12000 : ${/Type} === '1' ? 100 : 50000 }"
-          max="{= ${/Type} === '0' ? 50000 : ${/Type} === '1' ? 2000 : 200000 }"
+          max="{= ${/Type} === '0' ? 80000 : ${/Type} === '1' ? 2000 : 200000 }"
           progress="true" step="{= ${/Type} === '1' ? 100 : 1000 }"  class="sapUiMediumMarginBottom" width="95%"  showAdvancedTooltip="true"
           value="{= ${/Type} === '0' ? 24000 : ${/Type} === '2' ? 70000 : 400 }" />  
         <Label text="{i18n>labelEmployeeEntryDate}" required="true" labelFor="employeeCreationDate"/> 
